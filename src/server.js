@@ -24,11 +24,9 @@ app.get('/tasks', async (req, res) => {
     res.status(500).json({message: 'Error connnecting to database', error });
     console.log(error);
   }
-  
-})
+});
 
-// Testing server
-app.get('/hello', (req, res) => res.send('Hello'));
-app.post('/hello', (req, res) => res.send(`Hello ${req.body.name}!`));
+// Add Task
+
 
 app.listen(8000, () => console.log('listening on port 8000'));
