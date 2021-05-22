@@ -1,4 +1,5 @@
 import express from 'express';
+import mongo from 'mongodb';
 import MongoClient from 'mongodb';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -17,9 +18,6 @@ const dbConnection = async (operations, res) => {
 
     // For queries
     await operations(db);
-
-    // For testing REMOVE LATER
-    console.log("connection worked");
 
     client.close();
   } catch (error) {
@@ -63,6 +61,22 @@ app.post('/add-task', async (req, res) => {
 });
 
 // Delete Task
+app.post('/delete-task/:id', async (req, res) => {
+  dbConnection(async (db) => {
+
+    // Get task ID
+    const taskId = req.params.id;
+
+    // Get task to be deleted
+    const task = await await db.collection('tasks').findOne({"_id": mongo.ObjectID(taskId)});
+
+    // Delete task
+    await db.collection('tasks').deleteOne({"_id": mongo.ObjectID(taskId)});
+
+    res.status(200).json(task);
+
+  }, res);
+});
 
 // Set Task Reminder
 
