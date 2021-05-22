@@ -78,7 +78,33 @@ app.post('/delete-task/:id', async (req, res) => {
   }, res);
 });
 
-// Set Task Reminder
+// Set Task Reminder (switches the reminder boolean of task)
+app.post('/set-reminder/:id', async (req, res) => {
+  dbConnection(async (db) => {
+
+    // Get task ID
+    const taskId = req.params.id;
+
+    // Get task to to set reminder
+    const task = await await db.collection('tasks').findOne({"_id": mongo.ObjectID(taskId)});
+
+    // Get task reminder
+    const taskReminder = task.reminder;
+
+    // Update task reminder
+    await db.collection('tasks').updateOne({"_id": mongo.ObjectID(taskId)}, {
+      '$set': {
+        reminder: !taskReminder
+      }
+    });
+
+    // Get updated task
+    const updatedTask = await db.collection('tasks').findOne({"_id": mongo.ObjectID(taskId)});
+
+    res.status(200).json(updatedTask);
+
+  }, res);
+});
 
 // Server listening on port 8000
 app.listen(8000, () => console.log('listening on port 8000'));
