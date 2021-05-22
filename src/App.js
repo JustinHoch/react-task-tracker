@@ -52,8 +52,11 @@ function App() {
   }
 
   // toggle reminder
-  const toggleReminder = (id) => {
-    setTasks(tasks.map((task) => task.id === id ? { ...task, reminder: !task.reminder } : task));
+  const toggleReminder = async (id) => {
+    await fetch(`http://localhost:8000/set-reminder/${id}`, {
+      method: 'POST'
+    });
+    setTasks(tasks.map((task) => task._id === id ? { ...task, reminder: !task.reminder } : task));
   }
 
   return (
