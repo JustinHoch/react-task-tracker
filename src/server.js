@@ -28,7 +28,7 @@ const dbConnection = async (operations, res) => {
   }
 };
 
-// Get tasks from MongoDb
+// Get Tasks
 app.get('/tasks', async (req, res) => {
   dbConnection(async (db) => {
 
@@ -42,6 +42,25 @@ app.get('/tasks', async (req, res) => {
 });
 
 // Add Task
+app.post('/add-task', async (req, res) => {
+  dbConnection(async (db) => {
+
+    // Get task from request body
+    const {text, day, reminder} = req.body;
+    // const task = { text: text, day: day, reminder: reminder };
+    const task = {text, day, reminder};
+
+    // Query: Add task to collection
+    await db.collection('tasks').insertOne(task);
+
+    // Retrieve added task
+    const addedTask = await db.collection('tasks').findOne({"_id": task._id});
+
+    // Send added task
+    res.status(200).json(addedTask);
+
+  }, res);
+});
 
 // Delete Task
 
