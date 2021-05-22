@@ -43,8 +43,12 @@ function App() {
   };
 
   // Delete Task
-  const deleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+  const deleteTask = async (id) => {
+    await fetch(`http://localhost:8000/delete-task/${id}`, {
+      method: 'POST'
+    });
+
+    setTasks(tasks.filter((task) => task._id !== id));
   }
 
   // toggle reminder
