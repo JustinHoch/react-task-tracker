@@ -2,9 +2,14 @@ import express from 'express';
 import mongo from 'mongodb';
 import MongoClient from 'mongodb';
 import dotenv from 'dotenv';
+import cors from 'cors';
 dotenv.config();
 
+
 const app = express();
+
+// Had to use cors to enable Access-Control-Allow-Origin
+app.use(cors());
 
 // tell express to parse JSON
 app.use(express.json());
